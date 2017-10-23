@@ -1,11 +1,21 @@
 #Simple Stock Price App
 
-A simple web application that can check user selected stock prices. 
+A simple web application that allows each user to track his/her own selected stocks.  
+
+This application is extremely easy to use. 
+
+If you are bored and have time to waste, please check out the code and give me critics and siggestions. 
+
+Thank you！ 
 
 **What it does?** 
 
 Each user has his/her own account, which needs to be created with a username and password.
 After logging in, user can add a stock by typing in its symbol. The symbol will be validated. If no such symbol exists, user needs to re-enter. If symbol passes validation, user will see the new stock displayed in user's homepage. 
+
+Please note that the stock name will be checked and updated each time new data is fetched back. 
+
+I assume that a company's stock symbol would not change for a long time but the company's own business name could change. 
 
 
 
