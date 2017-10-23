@@ -13,6 +13,10 @@ Thank you！
 Each user has his/her own account, which needs to be created with a username and password.
 After logging in, user can add a stock by typing in its symbol. The symbol will be validated. If no such symbol exists, user needs to re-enter. If symbol passes validation, user will see the new stock displayed in user's homepage. 
 
+The stock price is freshly fetched from data source.
+
+I do not gurantee the degree of delay, because I solely rely on the returned data. 
+
 Please note that the stock name will be checked and updated each time new data is fetched back. 
 
 I assume that a company's stock symbol would not change for a long time but the company's own business name could change. 
