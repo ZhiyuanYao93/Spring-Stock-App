@@ -1,0 +1,75 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sign Up</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}">
+    </script>
+
+
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/1.0.11/dist/bootstrap-validate.js"></script>
+
+</head>
+
+
+<body>
+<!--/*@thymesVar id="user" type="com.zhiyuan.stockapp.models.User"*/-->
+<p th:text=" 'Welcome, ' + ${user.userName}">Welcome, user! </p>
+<div class="col-md-1">
+    <a class="btn btn-default" href="#" th:href="@{'/index/'}" role="button">Log Out</a>
+</div>
+
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+        <table class="table table-striped custab">
+            <thead>
+            <a href="#" th:href="@{'/user/' + ${user.userId} +'/stock/new'}" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new stock</a>
+            <tr>
+
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Ask Price </th>
+                <th>Bid Price </th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <!--/*@thymesVar id="user" type="com.zhiyuan.stockapp.models.Stock"*/-->
+            <tr th:each="stock:${user.stocks}">
+                <td th:text="${stock.stockName}">Apple</td>
+                <td th:text="${stock.stockSymbol}">AAPL</td>
+                <td th:text="${stock.stockAskPrice}">100</td>
+                <td th:text="${stock.stockBidPrice}">89</td>
+                <td class="text-center"> <a href="#" th:href="@{'/user/' + ${user.userId} + '/stock/' + ${stock.stockId} + '/delete'}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+
+            <tr th:remove="all">
+
+                <td>Google</td>
+                <td>GOOGL</td>
+                <td>1005</td>
+                <td>900</td>
+                <td class="text-center"> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+
+            <tr th:remove="all">
+
+                <td>Microsoft</td>
+                <td>MSFT</td>
+                <td>93</td>
+                <td>85</td>
+                <td class="text-center"> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

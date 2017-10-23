@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sign Up</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"/>
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}">
+    </script>
+
+
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/1.0.11/dist/bootstrap-validate.js"></script>
+
+</head>
+<body>
+<!--/*@thymesVar id="user" type="com.zhiyuan.stockapp.models.User"*/-->
+    <form class="form-horizontal" style="margin-top: 25%" th:object="${user}" th:action="@{/user/}" method="post">
+        <fieldset>
+            <input type="hidden" th:field="*{userId}"/>
+            <!-- Text input-->
+            <div class="form-group" >
+                <label class="col-md-4 control-label" for="email">Email</label>
+                <div class="col-md-4">
+                    <input id="email" name="email" type="text" placeholder="Your Email" class="form-control input-md" required="true" th:field="*{userName}"/>
+                </div>
+            </div>
+
+            <script>
+                bootstrapValidate('#email', 'email:Enter a valid email address');
+            </script>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="password">Password</label>
+                <div class="col-md-4">
+                    <input id="password" name="password" type="text" placeholder="Your password" class="form-control input-md" required="true" th:field="*{password}"/>
+                </div>
+            </div>
+
+            <script>
+                bootstrapValidate('#password', 'min:3:Your Password must be longer than 3 characters');
+                bootstrapValidate('#password', 'max:12:Your Password must not be longer than 12 characters');
+            </script>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="submit"></label>
+                <div class="col-md-4">
+                    <button id="submit" name="submit" class="btn btn-primary">Sign up!</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</body>
+</html>
