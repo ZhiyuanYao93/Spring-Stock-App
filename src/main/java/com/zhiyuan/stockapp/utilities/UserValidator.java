@@ -9,6 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by Zhiyuan Yao
  */
@@ -32,12 +34,17 @@ public class UserValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "NotEmpty");
 
-        if (user.getUserName().length() < 6 || user.getUserName().length() > 32) {
+        if (user.getUserName().length() < 3 || user.getUserName().length() > 32) {
             errors.rejectValue("userName", "Size.userForm.username");
         }
-        if (userService.findUserByName(user.getUserName()) != null) {
-            errors.rejectValue("userName", "Duplicate.userForm.username");
+
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+        if (!(VALID_EMAIL_ADDRESS_REGEX.matcher(user.getUserName()).matches())) {
+            errors.rejectValue("userName", "ValidEmail.userForm.username");
         }
+
 
         try{
             userService.findUserByName(user.getUserName());
@@ -48,7 +55,7 @@ public class UserValidator implements Validator {
 
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (user.getPassword().length() < 5 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
     }

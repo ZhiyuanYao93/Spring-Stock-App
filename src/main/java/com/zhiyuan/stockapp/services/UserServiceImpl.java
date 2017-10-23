@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public User findUserById(Integer userId) {
         Optional<User> userOptional = userRepository.findByUserId(userId);
         if (!userOptional.isPresent()){
-            log.error("User with ID: {} is not found.",userId);
+            log.error("User with ID: {} is not found. (from UserService.findUserById)",userId);
             throw new NotFoundException("User with ID " + userId +" is not found.");
         }
         return userOptional.get();
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public User findUserByName(String userName) {
         Optional<User> userOptional = userRepository.findByUserName(userName);
         if (!userOptional.isPresent()){
-            log.error("User with ID: {} is not found.",userName);
+            log.error("User with ID: {} is not found.(from UserService.findUserByUserName)",userName);
             throw new NotFoundException("User with ID " + userName +" is not found.");
         }
         return userOptional.get();

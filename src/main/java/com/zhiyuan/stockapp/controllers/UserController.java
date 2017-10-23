@@ -4,6 +4,7 @@ import com.zhiyuan.stockapp.Exceptions.NotFoundException;
 import com.zhiyuan.stockapp.models.User;
 import com.zhiyuan.stockapp.services.DataUpdater;
 import com.zhiyuan.stockapp.services.UserService;
+import com.zhiyuan.stockapp.utilities.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,11 +25,14 @@ public class UserController {
     private final UserService userService;
     private final DataUpdater dataUpdater;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserValidator userValidator;
 
-    public UserController(UserService userService, DataUpdater dataUpdater, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    public UserController(UserService userService, DataUpdater dataUpdater, BCryptPasswordEncoder bCryptPasswordEncoder, UserValidator userValidator) {
         this.userService = userService;
         this.dataUpdater = dataUpdater;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/user/new")
@@ -40,6 +44,7 @@ public class UserController {
     @PostMapping
     @RequestMapping("user")
     public String saveUser(@ModelAttribute("user") User user, BindingResult bindingResult){
+        userValidator.validate(user,bindingResult);
         if(bindingResult.hasErrors()){
             bindingResult.getAllErrors().forEach(objectError -> {
                 log.error(objectError.toString());
