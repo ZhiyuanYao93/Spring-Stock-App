@@ -4,7 +4,7 @@ A simple web application that allows each user to track his/her own selected sto
 
 This application is extremely easy to use. 
 
-If you are bored and have time to waste, please check out the code and give me critics and siggestions. 
+If you are bored and have time to spend, please check out the code and give me critics and siggestions. 
 
 Thank you！ 
 
