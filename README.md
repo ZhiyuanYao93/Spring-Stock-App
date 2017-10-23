@@ -37,5 +37,9 @@ The above link gives a CSV file in which stock name, ask price, bid price and sy
 
 5. A more pleasant and responsive UI.
 
+6. More comprehensive exception handling.
+
+7. Unit tests!!!!!!
+
 
 
