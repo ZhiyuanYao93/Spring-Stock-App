@@ -1,7 +1,9 @@
 package com.zhiyuan.stockapp.bootstrap;
 
+import com.zhiyuan.stockapp.models.Role;
 import com.zhiyuan.stockapp.models.Stock;
 import com.zhiyuan.stockapp.models.User;
+import com.zhiyuan.stockapp.repository.RoleRepository;
 import com.zhiyuan.stockapp.repository.StockRepository;
 import com.zhiyuan.stockapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +28,13 @@ public class StockBootStrap implements ApplicationListener<ContextRefreshedEvent
     private final UserRepository userRepository;
     private final StockRepository stockRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
 
-    public StockBootStrap(UserRepository userRepository, StockRepository stockRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public StockBootStrap(UserRepository userRepository, StockRepository stockRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.stockRepository = stockRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -40,6 +44,9 @@ public class StockBootStrap implements ApplicationListener<ContextRefreshedEvent
 
         userRepository.save(getUserAdmin());
         log.debug("Administrator saved");
+
+        roleRepository.save(getRoles());
+        log.debug("Preloaded roles saved");
 
         Optional<User> adminOptional = userRepository.findByUserName("admin");
         User admin = adminOptional.get();
@@ -51,11 +58,46 @@ public class StockBootStrap implements ApplicationListener<ContextRefreshedEvent
             stock.getUsers().add(admin);
         }
 
+        List<Role> roleList = roleRepository.findAll();
+
+        for (Role role : roleList){
+            admin.getRoles().add(role);
+            role.getUsers().add(admin);
+        }
+
         userRepository.save(admin);
         stockRepository.save(stockList);
+        roleRepository.save(roleList);
 
         log.debug("Initial assignment done.");
     }
+
+    public List<Role> getRoles(){
+        List<Role> preloadedRoles = new ArrayList<>();
+
+        Optional<Role> adminRoleOptional = roleRepository.findByRoleName("ADMIN");
+
+        if (! adminRoleOptional.isPresent()){
+            Role adminRole = new Role();
+            adminRole.setRoleName("ADMIN");
+            preloadedRoles.add(adminRole);
+        }else{
+            preloadedRoles.add(adminRoleOptional.get());
+        }
+
+        Optional<Role> userRoleOptional = roleRepository.findByRoleName("USER");
+
+        if (! adminRoleOptional.isPresent()){
+            Role userRole = new Role();
+            userRole.setRoleName("USER");
+            preloadedRoles.add(userRole);
+        }else{
+            preloadedRoles.add(userRoleOptional.get());
+        }
+
+        return preloadedRoles;
+    }
+
 
     public List<Stock> getStocks(){
         List<Stock> preloadedStocks = new ArrayList<>();
@@ -106,6 +148,7 @@ public class StockBootStrap implements ApplicationListener<ContextRefreshedEvent
             return adminUser;
         }
     }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.zhiyuan.stockapp.controllers;
 
 import com.zhiyuan.stockapp.Exceptions.NotFoundException;
+import com.zhiyuan.stockapp.models.Role;
 import com.zhiyuan.stockapp.models.User;
 import com.zhiyuan.stockapp.services.DataUpdater;
 import com.zhiyuan.stockapp.services.UserService;
@@ -57,14 +58,14 @@ public class UserController {
 
 
     @GetMapping("/user/login")
-    public String loginUser(@ModelAttribute("user") User user,BindingResult bindingResult){
-        log.debug("Entered user is: " + user.toString());
+    public String loginUser(@ModelAttribute("user") User user,BindingResult bindingResult,Model model){
+        log.debug("From UserController::loginUser, Entered user is: " + user.toString());
         User savedUser;
         if(bindingResult.hasErrors()){
             bindingResult.getAllErrors().forEach(objectError -> {
                 log.error(objectError.toString());
             });
-            log.debug("BindingResult has errors. Returning to index page...");
+            log.debug("From UserController::loginUser, BindingResult has errors. Returning to index page...");
             return "redirect:/index";
         }
 
@@ -77,11 +78,15 @@ public class UserController {
         }
         log.info(savedUser.toString());
         if (bCryptPasswordEncoder.matches(user.getPassword(),savedUser.getPassword()) ){
-            log.debug("Correct credentials. Going to user home");
+            log.debug("From UserController::loginUser, Correct credentials. Going to user home");
+            for(Role role: savedUser.getRoles()){
+                user.getRoles().add(role);
+            }
+            model.addAttribute("user",savedUser);
             return "redirect:/user/" + savedUser.getUserId() + "/home";
         }
         else{
-            log.debug("Incorrect password. Returning to index page... ");
+            log.debug("From UserController::loginUser,Incorrect password. Returning to index page... ");
             return "redirect:/index";
         }
     }

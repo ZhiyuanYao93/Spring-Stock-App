@@ -1,9 +1,19 @@
+# ===============================
+# = DATA SOURCE
+# ===============================
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/stock_dev
     username: stock_dev_user
     password: dev
     platform: mysql
+    dbcp2:
+      validation-query: SELECT 1
+      test-while-idle: true
+
+  # ===============================
+  # = JPA / HIBERNATE
+  # ===============================
   jpa:
     hibernate:
       ddl-auto: validate
