@@ -93,14 +93,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUserName(userName);
         if (!userOptional.isPresent()){
-            log.error("User: " + userName + "is not found");
-            throw new NotFoundException("User " + userName + "is not found");
+            log.error("User: " + userName + "is not found. (from UserService.loadUserByUsername)");
+            throw new UsernameNotFoundException("User " + userName + "is not found");
         }
 
         User user = userOptional.get();
 
         List<GrantedAuthority> authorityList = getUserAuthorityList(user.getRoles());
-
+        log.debug("Going to return userAuthBuilder");
         return userAuthenticationBuilder(user,authorityList);
 
     }
@@ -115,10 +115,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private UserDetails userAuthenticationBuilder(User user,List<GrantedAuthority> grantedAuthorities){
-        log.debug("In userAuthenticationBuilder.");
+        log.debug("In userAuthenticationBuilder. User name is :" + user.getUserName() +" . User password is:" + user.getPassword());
         return new org.springframework.security.core.userdetails.User(user.getUserName(),user.getPassword(),grantedAuthorities);
     }
-
-
 
 }

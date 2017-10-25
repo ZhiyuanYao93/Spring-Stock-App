@@ -7,6 +7,8 @@ import com.zhiyuan.stockapp.services.DataUpdater;
 import com.zhiyuan.stockapp.services.UserService;
 import com.zhiyuan.stockapp.utilities.UserValidator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,7 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping("/user/new")
+    @GetMapping("/register")
     public String createUser(Model model){
         model.addAttribute("user",new User());
         return USER_NEWUSERFORM_URL;
@@ -50,7 +52,7 @@ public class UserController {
             bindingResult.getAllErrors().forEach(objectError -> {
                 log.error(objectError.toString());
             });
-            return "redirect:/user/new";
+            return "redirect:/register";
         }
         User savedUser = userService.saveUser(user);
         return "redirect:/index";
@@ -74,7 +76,7 @@ public class UserController {
             savedUser = userService.findUserByName(user.getUserName());
 
         }catch(NotFoundException nfe){
-            return "redirect:/user/new";
+            return "redirect:/register";
         }
         log.info(savedUser.toString());
         if (bCryptPasswordEncoder.matches(user.getPassword(),savedUser.getPassword()) ){
@@ -97,6 +99,22 @@ public class UserController {
         dataUpdater.updateStockInDB(userService.findUserById(userId));
         model.addAttribute("user",userService.findUserById(userId));
         return "user/userhome";
+    }
+
+
+    @PostMapping("/login")
+    public String login(){
+        log.debug("In login()");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        log.debug("auth.getName() is: " + auth.getName());
+        User user = userService.findUserByName(auth.getName());
+        return "redirect:/user/" + user.getUserId() + "/home";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin/admin-home";
     }
 
 

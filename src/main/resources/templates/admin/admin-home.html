@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Home</title>
+</head>
+<body>
+<!--<h1 th:text="'Hello,' + ${user} ">Hello, Admin</h1>-->
+<!--<h1 th:text="'DESCR:' + ${description} ">DESCR</h1>-->
+<!--<h1 th:text="'NAME:' + ${name} ">NAME</h1>-->
+
+<h1>This is Admin Home Page.</h1>
+<div>
+    <label class="col-md-4 control-label" for="homepage"></label>
+    <div class="col-md-4">
+        <button id="homepage" name="homepage" class="btn btn-primary" th:href="@{'/index/'}">Home Page</button>
+    </div>
+
+</div>
+
+</body>
+</html>

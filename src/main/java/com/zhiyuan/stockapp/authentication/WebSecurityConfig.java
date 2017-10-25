@@ -34,52 +34,80 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
+
+//    @Override
+//    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//
+//        httpSecurity
+//                .authorizeRequests()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/index/").permitAll()
+//                .antMatchers("index").permitAll()
+//                .antMatchers("index/").permitAll()
+//                .antMatchers("/favicon.ico").permitAll()
+//                .antMatchers("/index").permitAll()
+//                .antMatchers("/user/new").permitAll()
+//                .antMatchers("/user/login").permitAll()
+//                .antMatchers("/h2-console/**").permitAll()
+//                .antMatchers("/console/**").permitAll()
+//                .antMatchers("/user/**").permitAll()
+//                .antMatchers("home").permitAll()
+//                .antMatchers("/stock/**").permitAll()
+//                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+//                .authenticated()
+//
+//                .and()
+//                .csrf().disable();
+////                .formLogin()
+//
+////                .loginPage("/user/login")
+////                .permitAll()
+////                .usernameParameter("email")
+////                .passwordParameter("password");
+//
+////                .and()
+//
+////                .logout()
+////                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+////                .logoutSuccessUrl("/")
+////
+////                .and()
+////
+////                .exceptionHandling().accessDeniedPage("/access-denied");
+//
+//
+//        httpSecurity.headers().frameOptions().disable();
+//
+//    }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/index/").permitAll()
                 .antMatchers("index").permitAll()
                 .antMatchers("index/").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/index").permitAll()
-                .antMatchers("/user/new").permitAll()
-                .antMatchers("/user/login").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
+
+                .antMatchers("/register").permitAll()
+//                .antMatchers("/login").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/console/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("home").permitAll()
-                .antMatchers("/stock/**").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-                .authenticated()
-
+                .antMatchers("/user/**").hasAuthority("USER").anyRequest().permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest().permitAll()
                 .and()
-                .csrf().disable();
-//                .formLogin()
+                .formLogin().loginPage("/index").failureUrl("/index?error=true")
 
-//                .loginPage("/user/login")
-//                .permitAll()
-//                .usernameParameter("email")
-//                .passwordParameter("password");
+                .usernameParameter("userName").passwordParameter("password")
+                .successForwardUrl("/login")
 
-//                .and()
-
-//                .logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/")
-//
-//                .and()
-//
-//                .exceptionHandling().accessDeniedPage("/access-denied");
-
-
-        httpSecurity.headers().frameOptions().disable();
-
+                .and().exceptionHandling()
+                .accessDeniedPage("/access-denied");
     }
-
-
 
     @Override
     public void configure(WebSecurity web) throws Exception {
