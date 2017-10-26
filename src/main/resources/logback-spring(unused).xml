@@ -1,0 +1,70 @@
+<!--<?xml version="1.0" encoding="utf-8" ?>-->
+
+<!--<configuration>-->
+    <!--<appender name="consolelog" class="ch.qos.logback.core.ConsoleAppender">-->
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<pattern>-->
+                <!--&lt;!&ndash;%d - %msg%n&ndash;&gt;-->
+                <!--%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n-->
+            <!--</pattern>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!--<appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>ERROR</level>-->
+            <!--<onMatch>DENY</onMatch>-->
+            <!--<onMismatch>ACCEPT</onMismatch>-->
+        <!--</filter>-->
+        <!--<encoder>-->
+            <!--<pattern>-->
+                <!--%msg%n-->
+            <!--</pattern>-->
+        <!--</encoder>-->
+        <!--&lt;!&ndash;Rolling policy&ndash;&gt;-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash;Path&ndash;&gt;-->
+            <!--<fileNamePattern>/Users/zhiyuanyao/Desktop/Spring files/stockapp/logs/info.%d.log</fileNamePattern>-->
+        <!--</rollingPolicy>-->
+    <!--</appender>-->
+
+    <!--<appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+            <!--<level>ERROR</level>-->
+        <!--</filter>-->
+        <!--<encoder>-->
+            <!--<pattern>-->
+                <!--%msg%n-->
+            <!--</pattern>-->
+        <!--</encoder>-->
+        <!--&lt;!&ndash;Rolling policy&ndash;&gt;-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash;Path&ndash;&gt;-->
+            <!--<fileNamePattern>/Users/zhiyuanyao/Desktop/Spring files/stockapp/logs/error.%d.log</fileNamePattern>-->
+        <!--</rollingPolicy>-->
+    <!--</appender>-->
+
+    <!--<appender name="fileDebugLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+            <!--<level>DEBUG</level>-->
+        <!--</filter>-->
+        <!--<encoder>-->
+            <!--<pattern>-->
+                <!--%d{yyyy-MM-dd HH:mm:ss} - %msg%n-->
+            <!--</pattern>-->
+        <!--</encoder>-->
+        <!--&lt;!&ndash;Rolling policy&ndash;&gt;-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash;Path&ndash;&gt;-->
+            <!--<fileNamePattern>/Users/zhiyuanyao/Desktop/Spring files/stockapp/logs/debug.%d.log</fileNamePattern>-->
+        <!--</rollingPolicy>-->
+    <!--</appender>-->
+
+    <!--<root level="debug">-->
+        <!--<appender-ref ref="consolelog"/>-->
+        <!--<appender-ref ref="fileInfoLog"/>-->
+        <!--<appender-ref ref="fileErrorLog"/>-->
+        <!--<appender-ref ref="fileDebugLog"/>-->
+    <!--</root>-->
+
+<!--</configuration>-->
