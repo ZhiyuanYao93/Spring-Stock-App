@@ -48,7 +48,8 @@ The above link gives a CSV file in which stock name, ask price, bid price and sy
 (Added 10.25.2017)
 
 1. Basic function is done on Oct. 27th 2017.
-2.Still needs admin operations and more user prompt (More communicative).
+
+2. Still needs admin operations and more user prompt (More communicative).
 
 
 
