@@ -1,7 +1,9 @@
 package com.zhiyuan.stockapp.bootstrap;
 
+import com.zhiyuan.stockapp.models.Role;
 import com.zhiyuan.stockapp.models.Stock;
 import com.zhiyuan.stockapp.models.User;
+import com.zhiyuan.stockapp.repository.RoleRepository;
 import com.zhiyuan.stockapp.repository.StockRepository;
 import com.zhiyuan.stockapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +26,13 @@ import java.util.Optional;
 public class MySQLBootStrap implements ApplicationListener<ContextRefreshedEvent> {
     private final UserRepository userRepository;
     private final StockRepository stockRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public MySQLBootStrap(UserRepository userRepository, StockRepository stockRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public MySQLBootStrap(UserRepository userRepository, StockRepository stockRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.stockRepository = stockRepository;
+        this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -36,9 +40,16 @@ public class MySQLBootStrap implements ApplicationListener<ContextRefreshedEvent
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (stockRepository.count() == 0) {
             stockRepository.save(getStocks());
-            log.debug("Preloaded stocks saved");
+            log.debug("Preloaded Stocks saved");
         }else{
-            log.debug("Preset stocks already exist.");
+            log.debug("Preset Stocks already exist.");
+        }
+
+        if (roleRepository.count() == 0) {
+            roleRepository.save(getRoles());
+            log.debug("Preloaded Roles saved");
+        }else{
+            log.debug("Preset Roles already exist.");
         }
 
         if (userRepository.count() == 0){
@@ -53,16 +64,23 @@ public class MySQLBootStrap implements ApplicationListener<ContextRefreshedEvent
         User admin = adminOptional.get();
         log.debug(admin.toString());
 
-        if (admin.getStocks().size() == 0 || admin.getStocks() == null) {
+        if (admin.getStocks().size() == 0 || admin.getRoles().size() == 0) {
             List<Stock> stockList = stockRepository.findAll();
+            List<Role> roleList = roleRepository.findAll();
 
             for (Stock stock : stockList) {
                 admin.getStocks().add(stock);
                 stock.getUsers().add(admin);
             }
 
+            for (Role role : roleList){
+                admin.getRoles().add(role);
+                role.getUsers().add(admin);
+            }
+
             userRepository.save(admin);
             stockRepository.save(stockList);
+            roleRepository.save(roleList);
 
             log.debug("Initial assignment done.");
         }else{
@@ -118,6 +136,29 @@ public class MySQLBootStrap implements ApplicationListener<ContextRefreshedEvent
             User adminUser = adminUserOptional.get();
             return adminUser;
         }
+    }
+
+    public List<Role> getRoles(){
+        List<Role> preloadedRoles = new ArrayList<>();
+        Optional<Role> adminRoleOptional = roleRepository.findByRoleName("ADMIN");
+        if (!adminRoleOptional.isPresent()){
+            Role adminRole = new Role();
+            adminRole.setRoleName("ADMIN");
+            preloadedRoles.add(adminRole);
+        }else{
+            preloadedRoles.add(adminRoleOptional.get());
+        }
+
+        Optional<Role> userRoleOptional = roleRepository.findByRoleName("USER");
+        if (!userRoleOptional.isPresent()){
+            Role userRole = new Role();
+            userRole.setRoleName("USER");
+            preloadedRoles.add(userRole);
+        }else{
+            preloadedRoles.add(userRoleOptional.get());
+        }
+
+        return preloadedRoles;
     }
 
 }
