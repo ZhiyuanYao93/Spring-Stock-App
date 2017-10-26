@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Sign Up</title>
+    <title>User Home</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
@@ -25,7 +25,11 @@
 <!--/*@thymesVar id="user" type="com.zhiyuan.stockapp.models.User"*/-->
 <p th:text=" 'Welcome, ' + ${user.userName}">Welcome, user! </p>
 <div class="col-md-1">
-    <a class="btn btn-default" href="#" th:href="@{'/index/'}" role="button">Log Out</a>
+    <a class="btn btn-default" href="#" th:href="@{'/logout'}" role="button">Log Out</a>
+</div>
+
+<div class="col-md-1">
+    <a class="btn btn-default" href="#" th:href="@{'/admin'}" role="button">Admin Home</a>
 </div>
 
 <div class="container">

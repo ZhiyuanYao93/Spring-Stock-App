@@ -5,8 +5,12 @@ import com.zhiyuan.stockapp.models.Role;
 import com.zhiyuan.stockapp.models.User;
 import com.zhiyuan.stockapp.services.DataUpdater;
 import com.zhiyuan.stockapp.services.UserService;
+import com.zhiyuan.stockapp.utilities.SessionUtils;
 import com.zhiyuan.stockapp.utilities.UserValidator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +32,9 @@ public class UserController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserValidator userValidator;
 
+    @Autowired
+    private SessionUtils sessionUtils;
+
 
     public UserController(UserService userService, DataUpdater dataUpdater, BCryptPasswordEncoder bCryptPasswordEncoder, UserValidator userValidator) {
         this.userService = userService;
@@ -36,7 +43,7 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping("/user/new")
+    @GetMapping("/register")
     public String createUser(Model model){
         model.addAttribute("user",new User());
         return USER_NEWUSERFORM_URL;
@@ -50,7 +57,7 @@ public class UserController {
             bindingResult.getAllErrors().forEach(objectError -> {
                 log.error(objectError.toString());
             });
-            return "redirect:/user/new";
+            return "redirect:/register";
         }
         User savedUser = userService.saveUser(user);
         return "redirect:/index";
@@ -74,7 +81,7 @@ public class UserController {
             savedUser = userService.findUserByName(user.getUserName());
 
         }catch(NotFoundException nfe){
-            return "redirect:/user/new";
+            return "redirect:/register";
         }
         log.info(savedUser.toString());
         if (bCryptPasswordEncoder.matches(user.getPassword(),savedUser.getPassword()) ){
@@ -94,10 +101,57 @@ public class UserController {
 
     @GetMapping("user/{id}/home")
     public String showUserHome(@PathVariable(value = "id") Integer userId,Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String authUserName = authentication.getName();
+        Integer authUserId = userService.findUserByName(authUserName).getUserId();
+
+        if (!authUserId.equals(userId)){
+            log.debug("Authenticated user " +authUserName +  " trying to peek other user home! Deny access!");
+            return "redirect:/accessdenied";
+        }
         dataUpdater.updateStockInDB(userService.findUserById(userId));
         model.addAttribute("user",userService.findUserById(userId));
         return "user/userhome";
     }
+
+
+    @PostMapping("/login")
+    public String login(){
+        sessionUtils.expireUserSessions("");
+        log.debug("From UserController::login(): entered login() method");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        log.debug("Is authenticated? ==> " + auth.isAuthenticated());
+
+        log.debug("auth.getName() is: " + auth.getName());
+        log.debug("auth.getAuthorities() is: " + auth.getAuthorities().toString());
+
+        User user = userService.findUserByName(auth.getName());
+        return "redirect:/user/" + user.getUserId() + "/home";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("In admin(). auth.getName() is: " + auth.getName());
+
+        log.debug("In admin(). auth.getAuthorities() is: " + auth.getAuthorities().toString());
+        log.debug("From UserController::admin(): Going to admin-home.html");
+        return "admin/admin-home";
+    }
+
+    @GetMapping("/accessdenied")
+    public String accessDeniedPage(){
+        log.debug("Going to 403 page.");
+        return "access-denied";
+    }
+
+
+//    @GetMapping("/logoutpage")
+//    public String logoutPage(){
+//        log.debug("From UserController::logputPage(): Going to logout.html");
+//        return "logout";
+//    }
 
 
 }

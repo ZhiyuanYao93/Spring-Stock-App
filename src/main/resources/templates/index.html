@@ -22,7 +22,7 @@
 </head>
 
 <body>
-<form class="form-horizontal" th:object="${user}" th:action="@{/user/login}" method="get">
+<form class="form-horizontal" th:object="${user}" th:action="@{/index}" method="post">
     <fieldset>
         <input type="hidden" th:field="*{userId}"/>
         <!-- Form Name -->
@@ -30,9 +30,9 @@
 
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="email">Email Id</label>
+            <label class="col-md-4 control-label" for="userName">Email Id</label>
             <div class="col-md-4">
-                <input id="email" name="email" placeholder="" class="form-control input-md" required="true" type="text" th:field="*{userName}"/>
+                <input id="userName" name="userName" placeholder="" class="form-control input-md" required="true" type="text" th:field="*{userName}"/>
             </div>
         </div>
 
@@ -55,6 +55,19 @@
         </script>
 
 
+        <div align="center" th:if="${param.error}">
+            <p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>
+        </div>
+
+        <div align="center" th:if="${param.logout}">
+            <p style="font-size: 20; color: #2d38ff;">You are logged out!</p>
+        </div>
+
+        <div align="center" th:if="${param.expire}">
+            <p style="font-size: 20; color: #ff1352;">Your session has expired. Please login again.</p>
+        </div>
+
+
 
         <!-- Button -->
         <div class="form-group">
@@ -69,7 +82,7 @@
 
 
 <div class="col-md-1">
-    <a class="btn btn-default" href="#" th:href="@{'/user/new'}" role="button">Sign Up!</a>
+    <a class="btn btn-default" href="#" th:href="@{'/register'}" role="button">Sign Up!</a>
 </div>
 
 </body>

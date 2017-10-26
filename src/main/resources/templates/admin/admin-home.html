@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin Home</title>
+
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
+</head>
+<body>
+<!--<h1 th:text="'Hello,' + ${user} ">Hello, Admin</h1>-->
+<!--<h1 th:text="'DESCR:' + ${description} ">DESCR</h1>-->
+<!--<h1 th:text="'NAME:' + ${name} ">NAME</h1>-->
+
+<h1>This is Admin Home Page.</h1>
+<div class="col-md-1">
+    <a class="btn btn-default" href="#" th:href="@{'/index'}" role="button">Home Page</a>
+</div>
+
+<button onclick="goBack()">Go Back</button>
+
+</body>
+</html>
