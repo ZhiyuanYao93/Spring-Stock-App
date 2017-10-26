@@ -59,6 +59,15 @@
             <p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>
         </div>
 
+        <div align="center" th:if="${param.logout}">
+            <p style="font-size: 20; color: #2d38ff;">You are logged out!</p>
+        </div>
+
+        <div align="center" th:if="${param.expire}">
+            <p style="font-size: 20; color: #ff1352;">Your session has expired. Please login again.</p>
+        </div>
+
+
 
         <!-- Button -->
         <div class="form-group">

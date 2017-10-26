@@ -5,6 +5,12 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Admin Home</title>
+
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
 </head>
 <body>
 <!--<h1 th:text="'Hello,' + ${user} ">Hello, Admin</h1>-->
@@ -12,13 +18,11 @@
 <!--<h1 th:text="'NAME:' + ${name} ">NAME</h1>-->
 
 <h1>This is Admin Home Page.</h1>
-<div>
-    <label class="col-md-4 control-label" for="homepage"></label>
-    <div class="col-md-4">
-        <button id="homepage" name="homepage" class="btn btn-primary" th:href="@{'/index/'}">Home Page</button>
-    </div>
-
+<div class="col-md-1">
+    <a class="btn btn-default" href="#" th:href="@{'/index'}" role="button">Home Page</a>
 </div>
+
+<button onclick="goBack()">Go Back</button>
 
 </body>
 </html>
