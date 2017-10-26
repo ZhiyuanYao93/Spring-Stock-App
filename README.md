@@ -30,7 +30,7 @@ http://finance.yahoo.com/d/quotes.csv?s=AAPL+GOOG+MSFT&f=nabs
 
 The above link gives a CSV file in which stock name, ask price, bid price and symbol are included. 
 
-**Improvements needed for this project (updated 10.23.2017):**
+**Improvements needed for this project (updated 10.25.2017):**
 1. More security functions. For example, user authentication, and email validation. 
 
 2. Decrease the requests made to CSV file source. 
@@ -44,6 +44,12 @@ The above link gives a CSV file in which stock name, ask price, bid price and sy
 6. More comprehensive exception handling.
 
 7. Unit tests!!!!!!
+
+(Added 10.25.2017)
+
+1. Basic function is done on Oct. 27th 2017.
+2.Still needs admin operations and more user prompt (More communicative).
+
 
 
 
