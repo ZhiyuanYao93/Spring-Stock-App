@@ -21,6 +21,7 @@ Please note that the stock name will be checked and updated each time new data i
 
 I assume that a company's stock symbol would not change for a long time but the company's own business name could change. 
 
+_Note_: When active profile is "default", it uses embedded H2 databse. To use MySQL databse,set profile to "dev" and remember to run the mysql-config.sql and database-initiation-script.sql in order under src/main/java/scripts. 
 
 
 **Where is the data from?** 
