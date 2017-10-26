@@ -101,6 +101,14 @@ public class UserController {
 
     @GetMapping("user/{id}/home")
     public String showUserHome(@PathVariable(value = "id") Integer userId,Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String authUserName = authentication.getName();
+        Integer authUserId = userService.findUserByName(authUserName).getUserId();
+
+        if (!authUserId.equals(userId)){
+            log.debug("Authenticated user " +authUserName +  " trying to peek other user home! Deny access!");
+            return "redirect:/accessdenied";
+        }
         dataUpdater.updateStockInDB(userService.findUserById(userId));
         model.addAttribute("user",userService.findUserById(userId));
         return "user/userhome";
@@ -137,6 +145,8 @@ public class UserController {
         log.debug("Going to 403 page.");
         return "access-denied";
     }
+
+
 //    @GetMapping("/logoutpage")
 //    public String logoutPage(){
 //        log.debug("From UserController::logputPage(): Going to logout.html");
