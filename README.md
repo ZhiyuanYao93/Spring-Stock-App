@@ -45,7 +45,7 @@ The above link gives a CSV file in which stock name, ask price, bid price and sy
 
 7. Unit tests!!!!!!
 
-(Added 10.25.2017)
+**_(Added 10.25.2017)_**
 
 1. Basic function is done on Oct. 27th 2017.
 
